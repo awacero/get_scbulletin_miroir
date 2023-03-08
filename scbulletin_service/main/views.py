@@ -20,6 +20,10 @@ def call_get_bulletin():
     """
 
     security_token = generate_password_hash(current_app.config['ACCESS_TOKEN'])
+    db_user = current_app.config['DB_USER']
+    db_password = current_app.config['DB_PASSWORD']
+    db_host = current_app.config['DB_HOST']
+    db_name = current_app.config['DB_NAME']
 
     token = request.args.get('token')
     
@@ -32,7 +36,8 @@ def call_get_bulletin():
         if user=='gv':
             
             try:
-                scbulletin_result = subprocess.call(['''python3 /opt/varios/scbulletin_gv.py -d mysql://sysop:sysop@localhost/seiscomp -x -e -p -3 -E %s > /tmp/%s.txt''' %(event_id,event_id)], shell=True )
+                scbulletin_result = subprocess.call([f'''python3 /opt/varios/scbulletin_gv.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
+
                 print(scbulletin_result) 
             except Exception as e:
                 print("Error in scbulletin_gv: %s %s" %(scbulletin_result,e))
