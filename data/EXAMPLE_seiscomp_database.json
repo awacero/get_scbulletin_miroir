@@ -1,0 +1,7 @@
+{
+"ip":"HOST_NAME_or_IP",
+"database":"SCP_DB_NAME",
+"user":"USER_NAME",
+"password":"PASSWORD"
+
+}
