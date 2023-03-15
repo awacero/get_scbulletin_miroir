@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import main
 
 
-@main.route('/get_bulletin')
+@main.route('/get_scbulletin')
 def call_get_bulletin():
 
     """
@@ -36,7 +36,7 @@ def call_get_bulletin():
         if user=='gv':
             
             try:
-                scbulletin_result = subprocess.call([f'''python3 /opt/varios/scbulletin_gv.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
+                scbulletin_result = subprocess.call([f'''seiscomp-python /opt/varios/scbulletin_gv.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
 
                 print(scbulletin_result) 
             except Exception as e:
