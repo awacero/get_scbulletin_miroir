@@ -41,6 +41,15 @@ def call_get_bulletin():
                 print(scbulletin_result) 
             except Exception as e:
                 print("Error in scbulletin_gv: %s %s" %(scbulletin_result,e))
+
+        elif user=='ms':
+            try:
+                scbulletin_result = subprocess.call([f'''seiscomp-python /opt/varios/scbulletin_ms.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
+
+                print(scbulletin_result) 
+            except Exception as e:
+                print("Error in scbulletin_ms: %s %s" %(scbulletin_result,e))
+        
         try:
             return send_from_directory('/tmp/','%s.txt'%event_id,as_attachment=True)
         except FileNotFoundError:
