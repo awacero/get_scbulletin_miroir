@@ -1,3 +1,2 @@
 ## GET_SCBULLETIN
-
-Create a Flask service to consult scbulletin
+This repository contains the code to create a Flask service to consult scbulletin
