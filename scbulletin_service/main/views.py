@@ -3,8 +3,8 @@ Created on Mar 8, 2023
 @author: wacero
 '''
 
-import subprocess 
-from flask import Flask, request, Response, current_app, send_from_directory
+import subprocess
+from flask import Flask, request, Response, current_app, send_from_directory, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import main
 
@@ -34,21 +34,39 @@ def call_get_bulletin():
         user = str(request.args.get('user'))
         print("Data received %s %s " %(event_id, user))
         if user=='gv':
-            
-            try:
-                scbulletin_result = subprocess.call([f'''seiscomp-python /opt/varios/scbulletin_gv.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
 
-                print(scbulletin_result) 
+            try:
+                with open(f"/tmp/{event_id}.txt", "w") as out:
+                    subprocess.run(
+                        [
+                            "seiscomp-python",
+                            "/opt/varios/scbulletin_gv.py",
+                            "-d",
+                            f"mysql://{db_user}:{db_password}@{db_host}/{db_name}",
+                            "-x", "-e", "-p", "-3", "-E", event_id
+                        ],
+                        check=True,
+                        stdout=out
+                    )
             except Exception as e:
-                print("Error in scbulletin_gv: %s %s" %(scbulletin_result,e))
+                print(f"Error in scbulletin_gv: {e}")
 
         elif user=='ms':
             try:
-                scbulletin_result = subprocess.call([f'''seiscomp-python /opt/varios/scbulletin_ms.py -d mysql://{db_user}:{db_password}@{db_host}/{db_name} -x -e -p -3 -E {event_id} > /tmp/{event_id}.txt''' ], shell=True )
-
-                print(scbulletin_result) 
+                with open(f"/tmp/{event_id}.txt", "w") as out:
+                    subprocess.run(
+                        [
+                            "seiscomp-python",
+                            "/opt/varios/scbulletin_ms.py",
+                            "-d",
+                            f"mysql://{db_user}:{db_password}@{db_host}/{db_name}",
+                            "-x", "-e", "-p", "-3", "-E", event_id
+                        ],
+                        check=True,
+                        stdout=out
+                    )
             except Exception as e:
-                print("Error in scbulletin_ms: %s %s" %(scbulletin_result,e))
+                print(f"Error in scbulletin_ms: {e}")
         
         try:
             return send_from_directory('/tmp/','%s.txt'%event_id,as_attachment=True)

@@ -4,8 +4,8 @@ os.environ['FLASK_CONFIG'] = 'production'
 os.environ['SEISCOMP_ROOT'] = "/home/seiscomp/seiscomp/"
 os.environ['HOME'] = "/home/seiscomp/"
 
-os.environ['PATH'] = f"{os.environ['PATH']}:/home/seiscomp/seiscomp/bin"
-os.environ['PYTHONPATH']=f"{os.environ['PATH']}:/home/seiscomp/seiscomp/lib/python:/home/seiscomp/.local/lib/python3.8/"
+os.environ['PATH'] += ":/home/seiscomp/seiscomp/bin"
+os.environ['PYTHONPATH'] = "/home/seiscomp/seiscomp/lib/python:/home/seiscomp/.local/lib/python3.8/"
 
 os.environ['LD_LIBRARY_PATH']= "/home/seiscomp/seiscomp/lib/"
 sys.path.insert(0,'/home/seiscomp/seiscomp/lib/python')
